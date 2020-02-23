@@ -13,24 +13,35 @@ comment"""
 #Common String operations"""
 
 """ 1 len(string) Returns the length of the string"""
-
 str_len = "This is an example string"
-#print("Length of this example string is: {}" len(str))
-print(len(str_len))
+print("Length of this example string is: " + str(len(str_len)))
+#Using format Method
+print("Length of this example string using format method is: {}".format(len(str_len)))
+#print(len(str_len))
 
 """ 2 for character in string Iterates over each character in the string"""
-
 str_for_loop = "Cherry"
 for x in str_for_loop:
-    print("The current char is: " + x)
-
+    print("The current char in the string {} is - {} ".format(str_for_loop,x))
 
 """ 3 if substring in string Checks whether the substring is part of the string"""
-
+str_substring_test = "My name is Laks"
+if "Laks" in str_substring_test:
+    print("Laks present in: " + str_substring_test)
+else:
+    print("Laks NOT present in: " + str_substring_test)
 
 """ 4 string[i] Accesses the character at index i of the string, starting at zero"""
+str_alphabet = "abcdefghijklmnopqrstuvwxyz"
+count = 1
+for current_char in str_alphabet:
+    print("The {} character in English alphabet is : {}".format(count,current_char))
+    count = count + 1
 
 """ 5 string[i:j] Accesses the substring starting at index i, ending at index j-1. If i is omitted, it's 0 by default. If j is omitted, it's len(string) by default."""
+str_caps = str_alphabet.upper()
+print("English alphabet in upper case is: {}".format(str_caps))
+print("The first 5 characters in English alphabet are: {}".format(str_caps[:5]))
 
 #String Class Methods (Common ones only)
 

@@ -19,6 +19,7 @@ print("\n This is about Integers")
 int_variable = 2
 print(type(int_variable))
 print(int_variable)
+print("The int variable is: " + str(int_variable))
 
 print("\n This is about Floats")
 float_variable = 3.1
