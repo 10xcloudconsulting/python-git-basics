@@ -15,6 +15,7 @@ print("The area of the triangle with base 2 and height 5 is : {}".format(area_tr
 # 2 Function to return area of a circle
 
 def area_circle(radius):
-    return math.pi*radius**2
+    area = math.pi*radius**2
+    return round(area, 2)
 
 print("The area of the circle with radius 3 is: {:.2f}".format(area_circle(3)))
