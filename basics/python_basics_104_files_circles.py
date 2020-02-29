@@ -60,5 +60,3 @@ with open("./data/circle_rad_area.txt", "w") as file:
     writer = csv.DictWriter(file, fieldnames=keys)
     writer.writeheader()
     writer.writerows(circles_list)
-
-# 10 Working with env variable INPUT_FILE getting radii and calculating areas and publishing all back into file into file given in env variable OUTPUT_FILE
