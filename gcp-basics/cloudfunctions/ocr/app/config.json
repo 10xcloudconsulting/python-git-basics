@@ -1,0 +1,7 @@
+{
+  "RESULT_TOPIC": "cloudvisionapitut-268410-10xcc-topic-gcf-ocr-results",
+  "RESULT_BUCKET": "cloudvisionapitut-268410-10xcc-gcf-ocr-texts",
+  "TRANSLATE_TOPIC": "cloudvisionapitut-268410-10xcc-topic-gcf-ocr-translate",
+  "TRANSLATE": true,
+  "TO_LANG": ["en", "fr", "es", "ja", "ru"]
+}

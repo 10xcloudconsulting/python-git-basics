@@ -1,0 +1,7 @@
+{
+  "RESULT_TOPIC": "-topic-gcf-ocr-results",
+  "TRANSLATE_TOPIC": "-topic-gcf-ocr-translate",
+  "RESULT_BUCKET": "-10xcc-gcf-ocr-texts",
+  "TRANSLATE": true,
+  "TO_LANG": ["en", "fr", "es", "ja", "ru"]
+}
