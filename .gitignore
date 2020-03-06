@@ -37,7 +37,6 @@ crash.log
 *.log
 *.sql
 *.sqlite
-*.txt
 
 # OS generated files #
 ######################
