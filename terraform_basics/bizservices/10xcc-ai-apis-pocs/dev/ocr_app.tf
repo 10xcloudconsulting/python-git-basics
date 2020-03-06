@@ -5,8 +5,11 @@ resource "google_cloudfunctions_function" "ocr_extract" {
  name                  = "ocr-extract"
  description           = "Image Processing Function with a Storage Trigger"
  available_memory_mb   = 256
- source_archive_bucket = "${google_storage_bucket.source_archive_bucket.name}"
- source_archive_object = "${google_storage_bucket_object.ocr_app_tf_zip.name}"
+
+ source_repository{
+  url = "https://source.developers.google.com/projects/tenxcc-core-01/repos/github_10xcloudconsulting_python-git-basics/moveable-aliases/master/paths/gcp-basics/cloudfunctions/ocr/ocr_app_tf"
+ }
+
  timeout               = 60
  entry_point           = "process_image"
  runtime               = "python37"
@@ -14,7 +17,7 @@ resource "google_cloudfunctions_function" "ocr_extract" {
 
  event_trigger{
   event_type = "google.storage.object.finalize"
-  resource   = "ai-apis-pocs-dev614d421b-10xcc-gcf-ocr-images"
+  resource   = "${module.new_project.project_id_out}-10xcc-gcf-ocr-images"
  }
 }
 
@@ -25,8 +28,10 @@ resource "google_cloudfunctions_function" "ocr_translate" {
  name                  = "ocr-translate"
  description           = "Text Translation Function with a Pub/Sub Trigger"
  available_memory_mb   = 256
- source_archive_bucket = "${google_storage_bucket.source_archive_bucket.name}"
- source_archive_object = "${google_storage_bucket_object.ocr_app_tf_zip.name}"
+
+ source_repository{
+  url = "https://source.developers.google.com/projects/tenxcc-core-01/repos/github_10xcloudconsulting_python-git-basics/moveable-aliases/master/paths/gcp-basics/cloudfunctions/ocr/ocr_app_tf"
+ }
  timeout               = 60
  entry_point           = "translate_text"
  runtime               = "python37"
@@ -34,7 +39,7 @@ resource "google_cloudfunctions_function" "ocr_translate" {
 
  event_trigger{
   event_type = "google.pubsub.topic.publish"
-  resource   = "projects/ai-apis-pocs-dev614d421b/topics/ai-apis-pocs-dev614d421b-topic-gcf-ocr-translate"
+  resource   = "projects/${module.new_project.project_id_out}/topics/${module.new_project.project_id_out}-topic-gcf-ocr-translate"
  }
 }
 
@@ -45,8 +50,11 @@ resource "google_cloudfunctions_function" "ocr_save" {
  name                  = "ocr-save"
  description           = "Function saving results to Cloud Storage with a Pub/Sub Trigger"
  available_memory_mb   = 256
- source_archive_bucket = "${google_storage_bucket.source_archive_bucket.name}"
- source_archive_object = "${google_storage_bucket_object.ocr_app_tf_zip.name}"
+
+ source_repository{
+  url = "https://source.developers.google.com/projects/tenxcc-core-01/repos/github_10xcloudconsulting_python-git-basics/moveable-aliases/master/paths/gcp-basics/cloudfunctions/ocr/ocr_app_tf"
+ }
+
  timeout               = 60
  entry_point           = "save_result"
  runtime               = "python37"
@@ -54,6 +62,6 @@ resource "google_cloudfunctions_function" "ocr_save" {
 
  event_trigger{
   event_type = "google.pubsub.topic.publish"
-  resource   = "projects/ai-apis-pocs-dev614d421b/topics/ai-apis-pocs-dev614d421b-topic-gcf-ocr-results"
+  resource   = "projects/${module.new_project.project_id_out}/topics/${module.new_project.project_id_out}-topic-gcf-ocr-results"
  }
 }
