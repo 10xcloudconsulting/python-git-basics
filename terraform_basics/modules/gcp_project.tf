@@ -1,5 +1,15 @@
+variable "project_name" {}
+variable "billing_account" {}
+variable "org_id" {}
+variable "parent_folder_id" {}
+variable "region" {}
+
+provider "google" {
+  region = var.region
+}
+
 resource "random_id" "id" {
-  byte_length = 2
+  byte_length = 4
   prefix      = var.project_name
 }
 
@@ -19,4 +29,8 @@ resource "google_project_service" "service" {
 
   project = google_project.project.project_id
   disable_on_destroy = false
+}
+
+output "project_id" {
+  value = google_project.project.project_id
 }

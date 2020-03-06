@@ -6,8 +6,9 @@ variable "project_name" {
 variable "billing_account" {
   description = "Billing account to which this project will be linked to"
 }
+
 variable "org_id" {
-  description = "Organization Id under which the project may be created. If parent_folder_id provided project created under this folder"
+  description = "Organisation Id under which the project may be created. If parent_folder_id provided project created under this folder"
 }
 
 variable "parent_folder_id" {
