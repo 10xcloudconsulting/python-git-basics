@@ -58,6 +58,11 @@ def verify_vehicle_reg(request):
     print("OK")
     print(response.text)
     print(response.json())
+    print(response.status_code)
+    if (response.status_code == 200):
+        print("Vehicle found")
+
+    return response.text
 
     """HTTP Cloud Function.
     Args:
@@ -80,7 +85,7 @@ def verify_vehicle_reg(request):
         name = 'World'
     return 'Hello {}!'.format(escape(name))
     """
-    return response.text
+
 
 # [END functions_dvla_verify_vehicle_reg]
 
