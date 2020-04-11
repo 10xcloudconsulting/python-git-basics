@@ -48,9 +48,10 @@ def verify_vehicle_reg(request):
     elif request_args and 'name' in request_args:
         num_plate_image = request_args['name']
     else:
-        num_plate_image = 'imagedetails'
+        num_plate_image = 'gs://regulatory-ai-pocs-devbe85-10xcc-gcf-ocr-images/IMG_6647.HEIC'
 
     #Extract Vehicle Registration Number from the Image
+    print("Name param is : {}".format(num_plate_image))
     regNum = extractRegistrationNum(num_plate_image)
 
     #Get the DVLA API Key from Secrets Manager
@@ -130,6 +131,21 @@ def extractRegistrationNum(image):
     print("In Extract Registration Number local function")
 
     #Call Vision API and obtain the Text Tokens
+    detect_text(image)
 
-    regNumToken = "KV16 MYL"
+    regNumToken = "KV16MYL"
     return regNumToken
+
+# [START functions_ocr_detect]
+def detect_text(image_uri):
+    print('Looking for text in image {}'.format(image_uri))
+
+    text_detection_response = vision_client.text_detection({
+        'source': {'image_uri': image_uri}
+    })
+    annotations = text_detection_response.text_annotations
+    if len(annotations) > 0:
+        text = annotations[0].description
+    else:
+        text = ''
+    print('Extracted text {} from image ({} chars).'.format(text, len(text)))
