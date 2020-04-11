@@ -3,7 +3,7 @@
   "TRANSLATE_TOPIC": "-topic-gcf-ocr-translate",
   "RESULT_BUCKET": "-10xcc-gcf-ocr-texts",
   "TRANSLATE": true,
-  "TO_LANG": ["en", "fr", "es", "ja", "ru"]
-  "DVLA_API_URL": "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles"
+  "TO_LANG": ["en", "fr", "es", "ja", "ru"],
+  "DVLA_API_URL": "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles",
   "DVLA_API_KEY_NAME": "10xcc-dvla-api-key"
 }
