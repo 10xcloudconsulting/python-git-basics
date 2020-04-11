@@ -15,6 +15,7 @@
 import base64
 import json
 import os
+import requests
 
 from google.cloud import pubsub_v1
 from google.cloud import storage
@@ -39,18 +40,18 @@ config = json.loads(data)
 def verify_vehicle_reg(request):
     print('Entered verify_vehicle_reg function')
 
-    #Make simple DVLA API call from here!
-    #First get the DVLA API Key from Secrets Manager
-    api_key = access_secret_version("regulatory-ai-pocs-devbe85", "10xcc-dvla-api-key", "latest")
-    print("Hi")
+    #Extract Vehicle Registration Number from the Image
+    regNum = extractRegistrationNum("image")
 
-    import requests
+    #Get the DVLA API Key from Secrets Manager
+    print('Getting API Key from Secrets Manager')
+    api_key = access_secret_version(project_id, config['DVLA_API_KEY_NAME'], "latest")
 
-    url = 'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles'
-
+    #url = 'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles'
+    url = config['DVLA_API_URL']
     head_dict = {"Content-Type": "application/json", "Accept": "application/json", "x-api-key": api_key}
 
-    pload = {"registrationNumber": "KV16 MYL"}
+    pload = {"registrationNumber": regNum}
 
     response = requests.post(url, headers = head_dict, json=pload)
 
@@ -67,6 +68,7 @@ def verify_vehicle_reg(request):
         Response object using `make_response`
         <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>.
     """
+    """
     request_json = request.get_json(silent=True)
     request_args = request.args
 
@@ -77,6 +79,8 @@ def verify_vehicle_reg(request):
     else:
         name = 'World'
     return 'Hello {}!'.format(escape(name))
+    """
+    return response
 
 # [END functions_dvla_verify_vehicle_reg]
 
@@ -106,3 +110,11 @@ def access_secret_version(project_id, secret_id, version_id):
     payload = response.payload.data.decode('UTF-8')
     return payload
     #print('Plaintext: {}'.format(payload))
+
+def extractRegistrationNum(image):
+    print("In Extract Registration Number local function")
+
+    #Call Vision API and obtain the Text Tokens
+
+    regNumToken = "KV16 MYL"
+    return regNumToken
