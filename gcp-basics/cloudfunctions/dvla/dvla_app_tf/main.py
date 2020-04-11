@@ -80,7 +80,7 @@ def verify_vehicle_reg(request):
         name = 'World'
     return 'Hello {}!'.format(escape(name))
     """
-    return response
+    return response.text
 
 # [END functions_dvla_verify_vehicle_reg]
 
