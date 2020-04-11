@@ -31,6 +31,20 @@ resource "google_storage_bucket" "text-store" {
   force_destroy = true
 }
 
+resource "google_storage_bucket" "pdf-store" {
+  name     = "${module.new_project.project_id_out}-10xcc-gcf-ocr-pdfs"
+  location = "EU"
+  project = module.new_project.project_id_out
+  force_destroy = true
+}
+
+resource "google_storage_bucket" "jsondoc-store" {
+  name     = "${module.new_project.project_id_out}-10xcc-gcf-ocr-jsondoc"
+  location = "EU"
+  project = module.new_project.project_id_out
+  force_destroy = true
+}
+
 resource "google_pubsub_topic" "topic_gcf_ocr_results" {
   name     = "${module.new_project.project_id_out}-topic-gcf-ocr-results"
   project = module.new_project.project_id_out

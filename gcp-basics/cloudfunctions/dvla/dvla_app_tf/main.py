@@ -38,6 +38,26 @@ config = json.loads(data)
 # [START functions_dvla_verify_vehicle_reg]
 def verify_vehicle_reg(request):
     print('Entered verify_vehicle_reg function')
+
+    #Make simple DVLA API call from here!
+    #First get the DVLA API Key from Secrets Manager
+    api_key = access_secret_version("regulatory-ai-pocs-devbe85", "10xcc-dvla-api-key", "latest")
+    print("Hi")
+
+    import requests
+
+    url = 'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles'
+
+    head_dict = {"Content-Type": "application/json", "Accept": "application/json", "x-api-key": api_key}
+
+    pload = {"registrationNumber": "KV16 MYL"}
+
+    response = requests.post(url, headers = head_dict, json=pload)
+
+    print("OK")
+    print(response.text)
+    print(response.json())
+
     """HTTP Cloud Function.
     Args:
         request (flask.Request): The request object.
@@ -59,3 +79,30 @@ def verify_vehicle_reg(request):
     return 'Hello {}!'.format(escape(name))
 
 # [END functions_dvla_verify_vehicle_reg]
+
+def access_secret_version(project_id, secret_id, version_id):
+#def access_secret_version("regulatory-ai-pocs-devbe85", "10xcc-dvla-api-key", "latest"):
+    """
+    Access the payload for the given secret version if one exists. The version
+    can be a version number as a string (e.g. "5") or an alias (e.g. "latest").
+    """
+
+    # Import the Secret Manager client library.
+    from google.cloud import secretmanager
+
+    # Create the Secret Manager client.
+    client = secretmanager.SecretManagerServiceClient()
+
+    # Build the resource name of the secret version.
+    name = client.secret_version_path(project_id, secret_id, version_id)
+
+    # Access the secret version.
+    response = client.access_secret_version(name)
+
+    # Print the secret payload.
+    #
+    # WARNING: Do not print the secret in a production environment - this
+    # snippet is showing how to access the secret material.
+    payload = response.payload.data.decode('UTF-8')
+    return payload
+    #print('Plaintext: {}'.format(payload))
