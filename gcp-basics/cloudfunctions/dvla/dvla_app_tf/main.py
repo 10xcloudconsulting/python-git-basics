@@ -40,8 +40,18 @@ config = json.loads(data)
 def verify_vehicle_reg(request):
     print('Entered verify_vehicle_reg function')
 
+    request_json = request.get_json(silent=True)
+    request_args = request.args
+
+    if request_json and 'name' in request_json:
+        num_plate_image = request_json['name']
+    elif request_args and 'name' in request_args:
+        num_plate_image = request_args['name']
+    else:
+        num_plate_image = 'imagedetails'
+
     #Extract Vehicle Registration Number from the Image
-    regNum = extractRegistrationNum("image")
+    regNum = extractRegistrationNum(num_plate_image)
 
     #Get the DVLA API Key from Secrets Manager
     print('Getting API Key from Secrets Manager')
