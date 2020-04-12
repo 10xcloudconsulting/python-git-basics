@@ -43,6 +43,17 @@ def verify_vehicle_reg(request):
 
     request_json = request.get_json(silent=True)
     request_args = request.args
+    request_files = request.files
+    request_form = request.form
+    request_data = request.data
+
+    print("Request content")
+    print(request_json)
+    print(request_args)
+    print(request_files)
+    print(request_form)
+    print(request_data)
+    print("Request content End")
 
     if request_json and 'name' in request_json:
         num_plate_image = request_json['name']
@@ -53,7 +64,7 @@ def verify_vehicle_reg(request):
 
     #Extract Vehicle Registration Number from the Image
     print("Name param is : {}".format(num_plate_image))
-    regNum = extractRegistrationNum(num_plate_image)
+    regNumTokens = extractRegistrationNum(num_plate_image)
 
     #Get the DVLA API Key from Secrets Manager
     print('Getting API Key from Secrets Manager')
@@ -63,17 +74,17 @@ def verify_vehicle_reg(request):
     url = config['DVLA_API_URL']
     head_dict = {"Content-Type": "application/json", "Accept": "application/json", "x-api-key": api_key}
 
-    pload = {"registrationNumber": regNum}
-
-    response = requests.post(url, headers = head_dict, json=pload)
-
-    print("OK")
-    print(response.text)
-    print(response.json())
-    print(response.status_code)
-    if (response.status_code == 200):
-        print("Vehicle found")
-
+    for token in regNumTokens:
+        pload = {"registrationNumber": token}
+        response = requests.post(url, headers = head_dict, json=pload)
+        print(response.text)
+        print(response.json())
+        print(response.status_code)
+        if (response.status_code == 200):
+            print("Vehicle found")
+            return response.text
+        else
+            print("Iterating")
     return response.text
 
     """HTTP Cloud Function.
@@ -132,10 +143,10 @@ def extractRegistrationNum(image):
     print("In Extract Registration Number local function")
 
     #Call Vision API and obtain the Text Tokens
-    detect_text(image)
+    regNumTokens = detect_text(image)
 
-    regNumToken = "KV16MYL"
-    return regNumToken
+    #regNumToken = "KV16MYL"
+    return regNumTokens
 
 # [START functions_ocr_detect]
 def detect_text(image_uri):
@@ -144,6 +155,18 @@ def detect_text(image_uri):
     text_detection_response = vision_client.text_detection({
         'source': {'image_uri': image_uri}
     })
+
+    """
+    If image is passed as stream in the Http Request us the below. Pass the image content object to text_detection method
+
+    with io.open(path, 'rb') as image_file:
+        content = image_file.read()
+
+    image = vision.types.Image(content=content)
+
+    response = client.text_detection(image=image)
+    """
+
     annotations = text_detection_response.text_annotations
     if len(annotations) > 0:
         text = annotations[0].description
@@ -162,3 +185,4 @@ def detect_text(image_uri):
             potential_veh_reg.append(i.strip())
 
     print(potential_veh_reg)
+    return potential_veh_reg
