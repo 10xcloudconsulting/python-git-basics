@@ -50,6 +50,7 @@ def verify_vehicle_reg(request):
     print("Request content")
     print(request_json)
     print(request_args)
+    # curl -F option
     print(request_files)
     print(request_form)
     print(request_data)
@@ -75,7 +76,8 @@ def verify_vehicle_reg(request):
     head_dict = {"Content-Type": "application/json", "Accept": "application/json", "x-api-key": api_key}
 
     for token in regNumTokens:
-        pload = {"registrationNumber": token}
+        print("Registration Num is : {}".format(token))
+        pload = {"registrationNumber": str(token)}
         response = requests.post(url, headers = head_dict, json=pload)
         print(response.text)
         print(response.json())
