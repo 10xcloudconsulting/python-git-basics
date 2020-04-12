@@ -16,6 +16,7 @@ import base64
 import json
 import os
 import requests
+import re
 
 from google.cloud import pubsub_v1
 from google.cloud import storage
