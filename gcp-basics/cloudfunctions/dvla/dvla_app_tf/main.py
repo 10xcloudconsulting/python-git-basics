@@ -17,6 +17,7 @@ import json
 import os
 import requests
 import re
+import time
 
 from google.cloud import pubsub_v1
 from google.cloud import storage
@@ -48,11 +49,14 @@ def verify_vehicle_reg(request):
     request_data = request.data
 
     print("Request content")
+
     print(request_json)
     print(request_args)
     # curl -F option
     print(request_files)
+    # curl -d option
     print(request_form)
+    #curl post with -d
     print(request_data)
     print("Request content End")
 
@@ -78,6 +82,7 @@ def verify_vehicle_reg(request):
     for token in regNumTokens:
         print("Registration Num is : {}".format(token))
         pload = {"registrationNumber": str(token)}
+        time.sleep(5)
         response = requests.post(url, headers = head_dict, json=pload)
         print(response.text)
         print(response.json())
