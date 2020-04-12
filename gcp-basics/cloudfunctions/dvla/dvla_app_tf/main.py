@@ -83,7 +83,7 @@ def verify_vehicle_reg(request):
         if (response.status_code == 200):
             print("Vehicle found")
             return response.text
-        else
+        else:
             print("Iterating")
     return response.text
 
