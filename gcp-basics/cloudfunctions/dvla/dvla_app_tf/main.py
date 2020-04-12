@@ -156,8 +156,8 @@ def detect_text(image_uri):
     for i in token_list:
         print(i)
         print(len(i.strip()))
-            if pattern.match(i.strip()):
-                print('Potential Vehicle Reg')
-                potential_veh_reg.append(i.strip())
+        if pattern.match(i.strip()):
+            print('Potential Vehicle Reg')
+            potential_veh_reg.append(i.strip())
 
     print(potential_veh_reg)
