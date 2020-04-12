@@ -149,3 +149,15 @@ def detect_text(image_uri):
     else:
         text = ''
     print('Extracted text {} from image ({} chars).'.format(text, len(text)))
+    print(text.split('\n'))
+    token_list = text.split('\n')
+    pattern = re.compile("([A-Z])([A-Z]).. *([A-Z])([A-Z])([A-Z])")
+    potential_veh_reg = []
+    for i in token_list:
+        print(i)
+        print(len(i.strip()))
+            if pattern.match(i.strip()):
+                print('Potential Vehicle Reg')
+                potential_veh_reg.append(i.strip())
+
+    print(potential_veh_reg)
