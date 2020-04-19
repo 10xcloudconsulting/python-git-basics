@@ -65,7 +65,7 @@ def verify_vehicle_reg(request):
     elif request_args and 'name' in request_args:
         num_plate_image = request_args['name']
     else:
-        num_plate_image = 'gs://regulatory-ai-pocs-devbe85-10xcc-gcf-ocr-images/IMG_6647.HEIC'
+        num_plate_image = 'gs://regulatory-ai-pocs-devbe85-10xcc-gcf-ocr-images/Kiran_WhiteCar.jpeg'
 
     #Extract Vehicle Registration Number from the Image
     print("Name param is : {}".format(num_plate_image))
