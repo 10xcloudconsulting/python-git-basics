@@ -182,14 +182,37 @@ def detect_text(image_uri):
     print('Extracted text {} from image ({} chars).'.format(text, len(text)))
     print(text.split('\n'))
     token_list = text.split('\n')
-    pattern = re.compile("([A-Z])([A-Z]).. *([A-Z])([A-Z])([A-Z])")
+    #pattern = re.compile("([A-Z])([A-Z]).. *([A-Z])([A-Z])([A-Z])")
+
+    # The following regex will check all types of UK number plates.
+
+    pattern = re.compile(r"(?P<Current>^[A-Z]{2}[0-9]{2}[A-Z]{3}$)|(?P<Prefix>^[A-Z][0-9]{1,3}[A-Z]{3}$)|(?P<Suffix>^[A-Z]{3}[0-9]{1,3}[A-Z]$)|(?P<DatelessLongNumberPrefix>^[0-9]{1,4}[A-Z]{1,2}$)|(?P<DatelessShortNumberPrefix>^[0-9]{1,3}[A-Z]{1,3}$)|(?P<DatelessLongNumberSuffix>^[A-Z]{1,2}[0-9]{1,4}$)|(?P<DatelessShortNumberSufix>^[A-Z]{1,3}[0-9]{1,3}$)|(?P<DatelessNorthernIreland>^[A-Z]{1,3}[0-9]{1,4}$)|(?P<DiplomaticPlate>^[0-9]{3}[DX]{1}[0-9]{3}$)")
+
     potential_veh_reg = []
     for i in token_list:
         print(i)
         print(len(i.strip()))
-        if pattern.match(i.strip()):
+        
+        # testing to if the out of the vehicle reg is not without space
+        print(re.sub(r"\s+","",i))
+
+        if pattern.match(re.sub(r"\s+",""), i.strip()):
+        #if pattern.match(i.strip()):  The above line will strip spaces if they appear in the number plate. The regex doesn't match if there is a space in the number plate
             print('Potential Vehicle Reg')
             potential_veh_reg.append(i.strip())
 
     print(potential_veh_reg)
     return potential_veh_reg
+
+# The following is probably simpler code to check if the items in a list match vehicle regex expressions.
+# The code removes the space within the reg number 
+
+#!/usr/bin/python3 
+# import re 
+# r = re.compile(r"(?P<Current>^[A-Z]{2}[0-9]{2}[A-Z]{3}$)|(?P<Prefix>^[A-Z][0-9]{1,3}[A-Z]{3}$)|(?P<Suffix>^[A-Z]{3}[0-9]{1,3}[A-Z]$)|(?P<DatelessLongNumberPrefix>^[0-9]{1,4}[A-Z]{1,2}$)|(?P<DatelessShortNumberPrefix>^[0-9]{1,3}[A-Z]{1,3}$)|(?P<DatelessLongNumberSuffix>^[A-Z]{1,2}[0-9]{1,4}$)|(?P<DatelessShortNumberSufix>^[A-Z]{1,3}[0-9]{1,3}$)|(?P<DatelessNorthernIreland>^[A-Z]{1,3}[0-9]{1,4}$)|(?P<DiplomaticPlate>^[0-9]{3}[DX]{1}[0-9]{3}$)")  
+# mylist = ["TOYOTA", "KM64ULV", "YARIS", "HYBRID", "GB"] 
+# newlist = list(filter(r.match, [re.sub(r'\W', '', i) for i in mylist]))  
+# print(newlist)  
+# mylist2 = ["AUDI", "M900EMO", "SLINE", "DIESEL", "GB"] 
+# newlist2 = list(filter(r.match, [re.sub(r'\W', '', i) for i in mylist2]))  
+# print(newlist2)
